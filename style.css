@@ -1,0 +1,50 @@
+html, body {
+    background: transparent;
+    font-family: sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: flex-start;
+    align-items: stretch;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.counter {
+    flex-grow: 1;
+    background: #333;
+    color: white;
+    padding: 4vh 10vw;
+    border-radius: 20px;
+    text-align: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    opacity: 0;
+    transform: translateX(-100%);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.counter.visible {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.counter-title {
+    font-size: 16vh;
+    font-weight: bold;
+}
+
+.counter-value {
+    font-size: 30vh;
+    font-weight: bold;
+    color: #89CFF0;
+    margin: 5vh 0;
+}
+
+.counter-extra {
+    font-size: 12vh;
+}
