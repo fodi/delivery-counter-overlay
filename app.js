@@ -22,7 +22,7 @@ const counterTimeoutSeconds = parseInt(params.get('timeout')) || defaultCounterT
 const counterCooldownSeconds = parseInt(params.get('cooldown')) || defaultCounterCooldownSeconds
 
 const elCounter = document.querySelector('.counter')
-const localStorageKeyPrefix = 'fodi-counter-overlay_' + channel
+const localStorageKeyPrefix = 'fodi_delivery-counter-overlay_' + channel
 
 let displayCounterCooldownTimeout = null
 let displayCounterCooldown = false
