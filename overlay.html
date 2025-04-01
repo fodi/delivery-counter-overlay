@@ -1,18 +1,26 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Delivery Counter Overlay</title>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="icon" href="data:,">
-        <link rel="stylesheet" href="style.css">
-    </head>
-    <body>
-        <div class="counter">
-            <div class="counter-title"><span id="label-today"><!-- Today: --></span></div>
-            <div class="counter-value" id="counter-today">0</div>
-            <div class="counter-extra"><span id="label-total"><!-- Total: --></span> <span id="counter-total">0</span></div>
+
+<head>
+    <title>Delivery Counter Overlay</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:,">
+    <link rel="stylesheet" href="overlay.css">
+</head>
+
+<body>
+    <div class="counter">
+        <div class="counter-title">
+            <span id="label-today"><!-- Today: --></span>
         </div>
-        <script type="module" src="app.js"></script>
-    </body>
+        <div class="counter-value" id="counter-today">0</div>
+        <div class="counter-extra">
+            <span id="label-total"><!-- Total: --></span>
+            <span id="counter-total">0</span>
+        </div>
+    </div>
+    <script type="module" src="overlay.js"></script>
+</body>
+
 </html>

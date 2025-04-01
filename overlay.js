@@ -14,7 +14,10 @@ const _PREVIOUS = '_previous'
 // override defaults with URL params
 const params = new URLSearchParams(window.location.search)
 const channel = params.get('channel') ?? defaultChannel
-const adminUser = params.get('admin') || channel
+const adminUsersCSV = params.get('admins_csv') || channel
+const adminUsers = adminUsersCSV.split(',').map(user => user.trim().toLowerCase())
+adminUsers.push(channel.toLowerCase())
+console.log("adminUsers:", adminUsers)
 const labelToday = params.get('lbl_today') ?? 'Today:'
 const labelTotal = params.get('lbl_total') ?? 'Total:'
 const commandQuery = params.get('cmd_query') ?? defaultCommandQuery
@@ -42,7 +45,7 @@ const chatClient = new ChatClient({ channels: [channel] })
 await chatClient.connect()
 const messageListener = chatClient.onMessage(async (channel, user, message, msg) => {
 
-    if (user === adminUser) { // admin commands
+    if (adminUsers.includes(user)) { // admin commands
         message = message.trim()
 
         if (message === commandQuery) {
