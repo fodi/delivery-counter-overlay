@@ -14,7 +14,9 @@ const _PREVIOUS = '_previous'
 // override defaults with URL params
 const params = new URLSearchParams(window.location.search)
 const channel = params.get('channel') ?? defaultChannel
-const adminUser = params.get('admin') ?? channel
+const adminUser = params.get('admin') || channel
+const labelToday = params.get('lbl_today') ?? 'Today:'
+const labelTotal = params.get('lbl_total') ?? 'Total:'
 const commandQuery = params.get('cmd_query') ?? defaultCommandQuery
 const commandToday = params.get('cmd_today') ?? '!today'
 const commandOld = params.get('cmd_old') ?? '!old'
@@ -27,8 +29,11 @@ const localStorageKeyPrefix = 'fodi_delivery-counter-overlay_' + channel
 let displayCounterCooldownTimeout = null
 let displayCounterCooldown = false
 
-// update counts at the start
-updateCounts()
+// on load, run these functions
+window.addEventListener('load', () => {
+    updateLabels()
+    updateCounts()
+})
 
 // MARK: connect to chat
 console.log('Connecting to channel:', channel)
@@ -36,7 +41,6 @@ console.log('Connecting to channel:', channel)
 const chatClient = new ChatClient({ channels: [channel] })
 await chatClient.connect()
 const messageListener = chatClient.onMessage(async (channel, user, message, msg) => {
-    //console.log("message:", message)
 
     if (user === adminUser) { // admin commands
         message = message.trim()
@@ -44,8 +48,8 @@ const messageListener = chatClient.onMessage(async (channel, user, message, msg)
         if (message === commandQuery) {
             showCounter()
         } else if (message.startsWith(commandToday)) {
-            // get count from the end of the message
-            const count = parseInt(message.match(/\d+/)[0]) || 0
+            const count = getCountFromMessage(message)
+
             const operation = message.charAt(commandToday.length)
             if (operation === '+') {
                 localStorage.setItem(localStorageKeyPrefix + _TODAY, getCount(_TODAY) + count)
@@ -55,9 +59,8 @@ const messageListener = chatClient.onMessage(async (channel, user, message, msg)
                 localStorage.setItem(localStorageKeyPrefix + _TODAY, count)
             }
             updateCounts()
-            // if message starts with old=, set the previous counter to that number
         } else if (message.startsWith(commandOld + '=')) {
-            const count = parseInt(message.match(/\d+/)[0]) || 0
+            const count = getCountFromMessage(message)
             localStorage.setItem(localStorageKeyPrefix + _PREVIOUS, count)
             updateCounts()
         } else {
@@ -82,6 +85,11 @@ const messageListener = chatClient.onMessage(async (channel, user, message, msg)
 
 // MARK: functions
 
+function getCountFromMessage(message) {
+    const count = message.match(/(\d+)/)
+    return count && count[0] ? parseInt(count[0]) : 0
+}
+
 function showCounter() {
     elCounter.classList.add('visible')
     setTimeout(() => {
@@ -93,6 +101,12 @@ function hideCounter() {
     elCounter.classList.remove('visible')
 }
 
+function updateLabels() {
+    document.querySelector('#label-today').textContent = labelToday
+    document.querySelector('#label-total').textContent = labelTotal
+    console.log("[updateLabels]", labelToday, labelTotal)
+}
+
 function updateCounts() {
     document.querySelector('#counter-today').textContent = getCount(_TODAY)
     document.querySelector('#counter-total').textContent = getCount(_TODAY) + getCount(_PREVIOUS)
@@ -101,6 +115,6 @@ function updateCounts() {
 
 function getCount(suffix) {
     const count = parseInt(localStorage.getItem(localStorageKeyPrefix + suffix)) || 0
-    console.log('getCount: ', suffix, count)
+    console.log('[getCount]', suffix, count)
     return count
 }

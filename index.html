@@ -1,18 +1,59 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Counter Overlay</title>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="icon" href="data:,">
-        <link rel="stylesheet" href="style.css">
-    </head>
-    <body>
-        <div class="counter">
-            <div class="counter-title">Címek ma:</div>
-            <div class="counter-value" id="counter-today">0</div>
-            <div class="counter-extra">Címek összesen: <span id="counter-total">0</span></div>
-        </div>
-        <script type="module" src="app.js"></script>
-    </body>
+
+<head>
+    <title>Configuration | Delivery Counter Overlay</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="data:,">
+    <link rel="stylesheet" href="pico.purple.min.css">
+    <style>
+        :root {
+            --pico-font-size: 85%
+        }
+    </style>
+</head>
+
+<body>
+    <main class="container">
+        <h1>Delivery Counter Overlay</h1>
+        <p>Hi there. This form allows you to generate a custom URL that you can add as a browser source to OBS.</p>
+        <h2>Configuration</h2>
+        <form action="overlay.html" method="get" target="_blank">
+            <div class="grid">
+                <div>
+                    <label for="channel">Twitch channel:</label>
+                    <input type="text" id="channel" name="channel" value="twitch" required><br>
+
+                    <label for="admin">Admin user (if different):</label>
+                    <input type="text" id="admin" name="admin" value=""><br>
+
+                    <label for="command-query">Query command:</label>
+                    <input type="text" id="command-query" name="cmd_query" value="!query" required><br>
+
+                    <label for="command-today">Today command:</label>
+                    <input type="text" id="command-today" name="cmd_today" value="!today" required><br>
+
+                    <label for="command-old">Old total ("up until today") command:</label>
+                    <input type="text" id="command-old" name="cmd_old" value="!old" required><br>
+                </div>
+                <div>
+                    <label for="label-today">Today label:</label>
+                    <input type="text" id="label-today" name="lbl_today" value="Today:" required><br>
+
+                    <label for="label-total">Total label:</label>
+                    <input type="text" id="label-total" name="lbl_total" value="Total:" required><br>
+
+                    <label for="counter-timeout">Counter timeout (seconds):</label>
+                    <input type="number" id="counter-timeout" name="timeout" value="5" min="1" required><br>
+
+                    <label for="public-cooldown">Public cooldown (seconds):</label>
+                    <input type="number" id="public-cooldown" name="cooldown" value="30" min="1" required><br>
+                </div>
+            </div>
+            <button type="submit">Open custom URL in new window</button>
+        </form>
+    </main>
+</body>
+
 </html>
